@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>MSEwithFLR.knit</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Inicio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="MSEwithFLR.html">MSE con FLR</a>
+</li>
+<li>
+  <a href="ejemplo1.html">Ejemplo 1</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="mse-con-flr" class="section level1">
+<h1>MSE con FLR</h1>
+<p>La Evaluación de la estrategia de gestión (MSE) es un marco para
+evaluar el desempeño de las Reglas de control de captura (HCR) frente a
+las incertidumbres predominantes (<strong>Punt et al. 2016</strong>).
+Este tutorial presenta los pasos básicos para construir un MSE
+single-species: acondicionamiento del modelo operativo, configuración
+del modelo de error de observación, construcción de un HCR basado en un
+modelo simple (basado en el enfoque ICES MSY), realización de
+simulaciones MSE (incluida la retroalimentación) y producir estadísticas
+de desempeño.</p>
+<p>El link del tutorial es el siguiente: <a
+href="https://flr-project.org/doc/An_introduction_to_MSE_using_FLR.html"
+class="uri">https://flr-project.org/doc/An_introduction_to_MSE_using_FLR.html</a></p>
+<style type="text/css">
+
+
+.scroll-200{
+            max-height: 200px; 
+            overflow-y: auto; 
+            background-color: #f1f1f1;
+            }
+</style>
+<div id="librarías-requeridas" class="section level2">
+<h2>librarías requeridas</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### Loads all necessary packages #### </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLa4a)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLash)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLXSA)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLBRP)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplotFL)</span></code></pre></div>
+</div>
+</div>
+<div id="condicionamiento-del-modelo-operativo" class="section level1">
+<h1>CONDICIONAMIENTO DEL MODELO OPERATIVO</h1>
+<p>El condicionamiento del modelo operativo es un paso clave en la
+construcción de un análisis MSE, ya que permite que los modelos
+operativos se consideren “plausibles” en el sentido de que son
+consistentes con los datos observados. En este tutorial, el modelo de
+evaluación <code>a4a</code> se ajusta a los datos dentro de los objetos
+<code>ple4 FLStock</code> y <code>ple4.index FLIndex</code> para
+producir <code>stk</code>, el objeto del modelo operativo
+<code>FLStock</code>.</p>
+<p>Se utiliza un método <code>mcmc</code> dentro de la evaluación
+<code>a4a</code> para obtener la incertidumbre de los parámetros,
+reflejada en la dimensión <code>iter</code> de <code>stk</code>.</p>
+<div id="leer-los-datos-de-la-evaluación-de-stock"
+class="section level2">
+<h2>Leer los datos de la evaluación de stock</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ple4)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ple4.index)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>stk <span class="ot">&lt;-</span> ple4 </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">FLIndices</span>(<span class="at">idx=</span>ple4.index)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ple4)</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ple4.index)</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+<div id="definir-el-número-de-iteraciones-y-ventana-de-proyección-años"
+class="section level2">
+<h2>Definir el número de iteraciones y ventana de proyección (años)</h2>
+<p>En este tutorial, se utilizan 20 iteraciones junto con una ventana de
+proyección de 12 años. Se utiliza un período de 3 años para calcular los
+promedios necesarios para las proyecciones (por ejemplo, pesos medios,
+etc.).</p>
+<ul>
+<li><em>it</em>: número de iteraciones</li>
+<li><em>y0</em>: año inicial de la evaluación de stock
+(<code>ple4</code>)</li>
+<li><em>dy</em>: año final de la evaluación de stock
+(<code>ple4</code>)</li>
+<li><em>iy</em>: año inicial de la proyección (también año
+intermedio)</li>
+<li><em>ny</em>: número de años de proyección desde el año inicial</li>
+<li><em>fy</em>: año final de la proyección</li>
+<li><em>nsqy</em>: número de años para calcular la medida de desempeño
+‘statu quo’.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the iteration and projection window parameters (years) ----------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>it <span class="ot">&lt;-</span> <span class="dv">20</span>                    <span class="co"># iterations</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">&lt;-</span> <span class="fu">range</span>(stk)[<span class="st">&quot;minyear&quot;</span>] <span class="co"># initial data year</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dy <span class="ot">&lt;-</span> <span class="fu">range</span>(stk)[<span class="st">&quot;maxyear&quot;</span>] <span class="co"># final data year</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>iy <span class="ot">&lt;-</span> dy<span class="sc">+</span><span class="dv">1</span>                  <span class="co"># initial year of projection (also intermediate year)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ny <span class="ot">&lt;-</span> <span class="dv">12</span>    <span class="co"># number of years to project from initial year</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>fy <span class="ot">&lt;-</span> dy<span class="sc">+</span>ny <span class="co"># final year</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nsqy <span class="ot">&lt;-</span> <span class="dv">3</span>   <span class="co"># number of years to compute status quo metrics</span></span></code></pre></div>
+</div>
+<div id="ajustar-el-modelo-de-evaluación-de-stock-a4a"
+class="section level2">
+<h2>Ajustar el modelo de evaluación de stock <code>a4a</code></h2>
+<p>Configure el modelo operativo (incluida la incertidumbre de los
+parámetros) en función del ajuste del modelo de evaluación
+<code>a4a</code> a los datos. Los puntos de referencia se obtienen para
+una <code>stk</code> “mediana” (<code>stk0</code>) para imitar las
+mejores estimaciones de los puntos de referencia utilizados en el
+enfoque ICES MSY.</p>
+<ul>
+<li><em>qmod</em>: Configurar el submodelo de capturabilidad con un
+<em>spline smoothing</em> (la configuración de una ‘lista’ permite más
+de un índice)</li>
+<li><em>fmod</em>: Configurar el submeode de mortalidad por pesca como
+un <em>tensor spline</em>, permite interactura edades y años.</li>
+<li><em>mcsave</em> y <em>mcmc</em>: Configurar los parámetros MCMC</li>
+<li><em>fit</em>: Ajustar el modelo</li>
+<li><em>stk</em>: actualizar el objeto FLStock y plot</li>
+<li><em>stk0</em>: ?</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the catchability submodel with a smoothing spline (setting up a &#39;list&#39; allows for more than one index) </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>qmod <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="sc">~</span><span class="fu">s</span>(age, <span class="at">k=</span><span class="dv">6</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the fishing mortality submodel as a tensor spline, which allows age and year to interact</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fmod <span class="ot">&lt;-</span> <span class="er">~</span><span class="fu">te</span>(<span class="fu">replace</span>(age, age<span class="sc">&gt;</span><span class="dv">9</span>,<span class="dv">9</span>), year, <span class="at">k=</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">8</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the MCMC parameters</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>mcsave <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>mcmc   <span class="ot">&lt;-</span> it <span class="sc">*</span> mcsave</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sca</span>(stk, idx, <span class="at">fmodel =</span> fmod, </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">qmodel =</span> qmod, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fit    =</span> <span class="st">&quot;MCMC&quot;</span>, </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mcmc   =</span> <span class="fu">SCAMCMC</span>(<span class="at">mcmc    =</span> mcmc, </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mcsave  =</span> mcsave, </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mcprobe =</span> <span class="fl">0.4</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the FLStock object</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>stk <span class="ot">&lt;-</span> stk <span class="sc">+</span> fit</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stk)</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduce to keep one iteration only for reference points</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>stk0 <span class="ot">&lt;-</span> <span class="fu">qapply</span>(stk, iterMedians)</span></code></pre></div>
+</div>
+<div id="ajustar-el-modelo-stock-recluta" class="section level2">
+<h2>Ajustar el modelo stock-recluta</h2>
+<p>Se ajusta un modelo stock-recluta de Beverton-Holt para cada
+iteración, con residuos generados para la ventana de proyección basados
+en los residuos del período histórico. También se ajusta un modelo de
+stock-recluta al <code>stk</code> “mediana” como puntos de
+referencia.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ** Fit the stock-recruit model ** --------------------------------------------</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>srbh  <span class="ot">&lt;-</span> <span class="fu">fmle</span>(<span class="fu">as.FLSR</span>(stk,  <span class="at">model=</span><span class="st">&quot;bevholt&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">method=</span><span class="st">&quot;L-BFGS-B&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">lower=</span><span class="fu">c</span>(<span class="fl">1e-6</span>, <span class="fl">1e-6</span>), </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">upper=</span><span class="fu">c</span>(<span class="fu">max</span>(<span class="fu">rec</span>(stk)) <span class="sc">*</span> <span class="dv">3</span>, <span class="cn">Inf</span>))</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; final  value -20.758968 
+#&gt; converged
+#&gt; final  value -20.758968 
+#&gt; converged
+#&gt; final  value -20.768159 
+#&gt; converged
+#&gt; final  value -20.935400 
+#&gt; converged
+#&gt; final  value -21.007624 
+#&gt; converged
+#&gt; final  value -20.439052 
+#&gt; converged
+#&gt; final  value -21.316012 
+#&gt; converged
+#&gt; final  value -21.310005 
+#&gt; converged
+#&gt; final  value -20.554047 
+#&gt; converged
+#&gt; final  value -20.004885 
+#&gt; converged
+#&gt; final  value -18.967237 
+#&gt; converged
+#&gt; final  value -19.170771 
+#&gt; converged
+#&gt; final  value -18.891406 
+#&gt; converged
+#&gt; final  value -18.756519 
+#&gt; converged
+#&gt; final  value -19.229060 
+#&gt; converged
+#&gt; final  value -20.340877 
+#&gt; converged
+#&gt; final  value -20.806457 
+#&gt; converged
+#&gt; final  value -21.515995 
+#&gt; converged
+#&gt; final  value -20.407033 
+#&gt; converged
+#&gt; final  value -20.233131 
+#&gt; converged</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>srbh0  <span class="ot">&lt;-</span> <span class="fu">fmle</span>(<span class="fu">as.FLSR</span>(stk0,  <span class="at">model=</span><span class="st">&quot;bevholt&quot;</span>),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">method=</span><span class="st">&quot;L-BFGS-B&quot;</span>, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">lower=</span><span class="fu">c</span>(<span class="fl">1e-6</span>, <span class="fl">1e-6</span>), </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">upper=</span><span class="fu">c</span>(<span class="fu">max</span>(<span class="fu">rec</span>(stk)) <span class="sc">*</span> <span class="dv">3</span>, <span class="cn">Inf</span>))</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; final  value -20.364047 
+#&gt; converged</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(srbh0)</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate stock-recruit residuals for the projection period</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>srbh.res <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(it, </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">FLQuant</span>(<span class="dv">0</span>, <span class="at">dimnames=</span><span class="fu">list</span>(<span class="at">year=</span>iy<span class="sc">:</span>fy)),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">mean</span>(<span class="fu">c</span>(<span class="fu">apply</span>(<span class="fu">residuals</span>(srbh), <span class="dv">6</span>, sd))))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Segmented regression to &#39;estimate&#39; Blim.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>srsegreg0 <span class="ot">&lt;-</span> <span class="fu">fmle</span>(<span class="fu">as.FLSR</span>(stk0, <span class="at">model=</span><span class="st">&quot;segreg&quot;</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">method=</span><span class="st">&quot;L-BFGS-B&quot;</span>, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower=</span><span class="fu">c</span>(<span class="fl">1e-6</span>, <span class="fl">1e-6</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">upper=</span><span class="fu">c</span>(<span class="fu">max</span>(<span class="fu">rec</span>(stk)) <span class="sc">*</span> <span class="dv">3</span>, <span class="cn">Inf</span>)) </span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; final  value -23.889301 
+#&gt; converged</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(srsegreg0)</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div
+id="calcular-los-puntos-de-referencia-y-configurar-el-modelo-operativo-para-la-ventana-de-proyección."
+class="section level2">
+<h2>Calcular los puntos de referencia y configurar el modelo operativo
+para la ventana de proyección.</h2>
+<p>Puntos de referencia basados en el <code>stk</code> “mediano”,
+asumiendo (solo con fines ilustrativos) que <span
+class="math inline">\(B_{pa}=0.5_{B_{msy}}\)</span> y <span
+class="math inline">\(B_{lim}=B_{pa}/1.4\)</span>.</p>
+<p>El método <code>stf</code> se aplica al objeto <code>stk</code> del
+modelo operativo para tener los datos necesarios (pesos medios, etc.)
+para la ventana de proyección.</p>
+<p><strong>NOTA: En el ejemplo de Dorleta se usan otros puntos de
+referencia</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the reference points</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>brp  <span class="ot">&lt;-</span> <span class="fu">brp</span>(<span class="fu">FLBRP</span>(stk0, srbh0))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">refpts</span>(brp)</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; An object of class &quot;FLPar&quot;
+#&gt;         quant
+#&gt; refpt    harvest  yield    rec      ssb      biomass  revenue  cost    
+#&gt;   virgin 0.00e+00 0.00e+00 1.34e+06 4.60e+06 4.74e+06       NA       NA
+#&gt;   msy    1.64e-01 1.01e+05 1.19e+06 1.45e+06 1.57e+06       NA       NA
+#&gt;   crash  5.38e-01 9.06e-07 1.58e-05 3.17e-06 4.41e-06       NA       NA
+#&gt;   f0.1   1.56e-01 1.01e+05 1.20e+06 1.54e+06 1.66e+06       NA       NA
+#&gt;   fmax   2.12e-01 9.71e+04 1.12e+06 1.04e+06 1.14e+06       NA       NA
+#&gt;   spr.30 1.94e-01 9.94e+04 1.15e+06 1.18e+06 1.29e+06       NA       NA
+#&gt;   mey          NA       NA       NA       NA       NA       NA       NA
+#&gt;         quant
+#&gt; refpt    profit  
+#&gt;   virgin       NA
+#&gt;   msy          NA
+#&gt;   crash        NA
+#&gt;   f0.1         NA
+#&gt;   fmax         NA
+#&gt;   spr.30       NA
+#&gt;   mey          NA
+#&gt; units:  NA</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Fmsy <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">refpts</span>(brp)[<span class="st">&quot;msy&quot;</span>,<span class="st">&quot;harvest&quot;</span>])</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>msy  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">refpts</span>(brp)[<span class="st">&quot;msy&quot;</span>,<span class="st">&quot;yield&quot;</span>])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Bmsy <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">refpts</span>(brp)[<span class="st">&quot;msy&quot;</span>,<span class="st">&quot;ssb&quot;</span>])</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>Blim <span class="ot">&lt;-</span> srsegreg0<span class="sc">@</span>params<span class="sc">$</span>b[drop<span class="ot">=</span>T]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>Bpa  <span class="ot">&lt;-</span> Blim<span class="sc">*</span><span class="fu">exp</span>(<span class="fl">1.654</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">ssb</span>(stk)<span class="sc">/</span><span class="fu">mean</span>(<span class="fu">ssb</span>(stk))))) </span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Prepare the FLStock object for projections</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>stk <span class="ot">&lt;-</span> <span class="fu">stf</span>(stk, fy<span class="sc">-</span>dy, nsqy, nsqy)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>stk<span class="sc">@</span>stock.wt</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; An object of class &quot;FLQuant&quot;
+#&gt; iters:  20 
+#&gt; 
+#&gt; , , unit = unique, season = all, area = unique
+#&gt; 
+#&gt;     year
+#&gt; age  1957        1958        1959        1960        1961        1962       
+#&gt;   1  0.038000(0) 0.041000(0) 0.045000(0) 0.038000(0) 0.037000(0) 0.036000(0)
+#&gt;   2  0.102000(0) 0.093000(0) 0.106000(0) 0.111000(0) 0.098000(0) 0.096000(0)
+#&gt;   3  0.157000(0) 0.180000(0) 0.173000(0) 0.181000(0) 0.185000(0) 0.173000(0)
+#&gt;   4  0.242000(0) 0.272000(0) 0.264000(0) 0.272000(0) 0.306000(0) 0.301000(0)
+#&gt;   5  0.325000(0) 0.303000(0) 0.329000(0) 0.364000(0) 0.337000(0) 0.424000(0)
+#&gt;   6  0.485000(0) 0.442000(0) 0.470000(0) 0.469000(0) 0.483000(0) 0.573000(0)
+#&gt;   7  0.719000(0) 0.577000(0) 0.650000(0) 0.633000(0) 0.579000(0) 0.684000(0)
+#&gt;   8  0.682000(0) 0.778000(0) 0.686000(0) 0.726000(0) 0.691000(0) 0.806000(0)
+#&gt;   9  0.844000(0) 0.793000(0) 0.908000(0) 0.845000(0) 0.779000(0) 0.873000(0)
+#&gt;   10 0.918000(0) 0.945000(0) 0.897000(0) 0.918000(0) 0.911000(0) 1.335000(0)
+#&gt;     year
+#&gt; age  1963        1964        1965        1966        1967        1968       
+#&gt;   1  0.041000(0) 0.024000(0) 0.031000(0) 0.031000(0) 0.029000(0) 0.055000(0)
+#&gt;   2  0.103000(0) 0.113000(0) 0.068000(0) 0.099000(0) 0.104000(0) 0.094000(0)
+#&gt;   3  0.176000(0) 0.184000(0) 0.198000(0) 0.127000(0) 0.179000(0) 0.175000(0)
+#&gt;   4  0.273000(0) 0.296000(0) 0.294000(0) 0.305000(0) 0.205000(0) 0.287000(0)
+#&gt;   5  0.378000(0) 0.373000(0) 0.333000(0) 0.403000(0) 0.442000(0) 0.344000(0)
+#&gt;   6  0.540000(0) 0.477000(0) 0.430000(0) 0.455000(0) 0.528000(0) 0.532000(0)
+#&gt;   7  0.663000(0) 0.645000(0) 0.516000(0) 0.503000(0) 0.585000(0) 0.592000(0)
+#&gt;   8  0.788000(0) 0.673000(0) 0.601000(0) 0.565000(0) 0.650000(0) 0.362000(0)
+#&gt;   9  0.882000(0) 0.845000(0) 0.722000(0) 0.581000(0) 0.703000(0) 0.667000(0)
+#&gt;   10 0.961000(0) 0.973000(0) 0.578000(0) 0.848000(0) 0.833000(0) 0.746000(0)
+#&gt;     year
+#&gt; age  1969        1970        1971        1972        1973        1974       
+#&gt;   1  0.047000(0) 0.043000(0) 0.051000(0) 0.056000(0) 0.037000(0) 0.049000(0)
+#&gt;   2  0.158000(0) 0.113000(0) 0.109000(0) 0.158000(0) 0.134000(0) 0.105000(0)
+#&gt;   3  0.188000(0) 0.236000(0) 0.251000(0) 0.218000(0) 0.237000(0) 0.217000(0)
+#&gt;   4  0.266000(0) 0.274000(0) 0.344000(0) 0.407000(0) 0.308000(0) 0.416000(0)
+#&gt;   5  0.344000(0) 0.369000(0) 0.413000(0) 0.473000(0) 0.468000(0) 0.437000(0)
+#&gt;   6  0.390000(0) 0.410000(0) 0.489000(0) 0.534000(0) 0.521000(0) 0.524000(0)
+#&gt;   7  0.565000(0) 0.468000(0) 0.512000(0) 0.579000(0) 0.566000(0) 0.570000(0)
+#&gt;   8  0.621000(0) 0.636000(0) 0.583000(0) 0.606000(0) 0.583000(0) 0.629000(0)
+#&gt;   9  0.679000(0) 0.732000(0) 0.696000(0) 0.655000(0) 0.617000(0) 0.652000(0)
+#&gt;   10 0.635000(0) 0.747000(0) 0.707000(0) 0.759000(0) 0.690000(0) 0.690000(0)
+#&gt;     year
+#&gt; age  1975        1976        1977        1978        1979        1980       
+#&gt;   1  0.063000(0) 0.082000(0) 0.064000(0) 0.064000(0) 0.062000(0) 0.049000(0)
+#&gt;   2  0.141000(0) 0.169000(0) 0.184000(0) 0.151000(0) 0.179000(0) 0.163000(0)
+#&gt;   3  0.187000(0) 0.226000(0) 0.265000(0) 0.319000(0) 0.258000(0) 0.289000(0)
+#&gt;   4  0.388000(0) 0.308000(0) 0.311000(0) 0.373000(0) 0.365000(0) 0.428000(0)
+#&gt;   5  0.483000(0) 0.484000(0) 0.405000(0) 0.411000(0) 0.414000(0) 0.444000(0)
+#&gt;   6  0.544000(0) 0.550000(0) 0.551000(0) 0.467000(0) 0.459000(0) 0.524000(0)
+#&gt;   7  0.610000(0) 0.593000(0) 0.627000(0) 0.547000(0) 0.543000(0) 0.582000(0)
+#&gt;   8  0.668000(0) 0.658000(0) 0.690000(0) 0.630000(0) 0.667000(0) 0.651000(0)
+#&gt;   9  0.704000(0) 0.694000(0) 0.667000(0) 0.704000(0) 0.764000(0) 0.778000(0)
+#&gt;   10 0.762000(0) 0.743000(0) 0.759000(0) 0.773000(0) 0.826000(0) 1.025000(0)
+#&gt;     year
+#&gt; age  1981        1982        1983        1984        1985        1986       
+#&gt;   1  0.041000(0) 0.048000(0) 0.045000(0) 0.048000(0) 0.048000(0) 0.043000(0)
+#&gt;   2  0.140000(0) 0.128000(0) 0.128000(0) 0.129000(0) 0.146000(0) 0.126000(0)
+#&gt;   3  0.239000(0) 0.250000(0) 0.242000(0) 0.216000(0) 0.232000(0) 0.245000(0)
+#&gt;   4  0.421000(0) 0.351000(0) 0.381000(0) 0.413000(0) 0.320000(0) 0.311000(0)
+#&gt;   5  0.473000(0) 0.490000(0) 0.494000(0) 0.464000(0) 0.452000(0) 0.440000(0)
+#&gt;   6  0.536000(0) 0.589000(0) 0.559000(0) 0.571000(0) 0.536000(0) 0.533000(0)
+#&gt;   7  0.570000(0) 0.631000(0) 0.624000(0) 0.649000(0) 0.635000(0) 0.692000(0)
+#&gt;   8  0.624000(0) 0.679000(0) 0.712000(0) 0.692000(0) 0.656000(0) 0.779000(0)
+#&gt;   9  0.707000(0) 0.726000(0) 0.754000(0) 0.787000(0) 0.764000(0) 0.888000(0)
+#&gt;   10 0.849000(0) 0.828000(0) 0.791000(0) 0.898000(0) 0.869000(0) 0.971000(0)
+#&gt;     year
+#&gt; age  1987        1988        1989        1990        1991        1992       
+#&gt;   1  0.036000(0) 0.036000(0) 0.039000(0) 0.043000(0) 0.048000(0) 0.043000(0)
+#&gt;   2  0.105000(0) 0.097000(0) 0.101000(0) 0.108000(0) 0.131000(0) 0.121000(0)
+#&gt;   3  0.200000(0) 0.172000(0) 0.192000(0) 0.176000(0) 0.184000(0) 0.199000(0)
+#&gt;   4  0.383000(0) 0.264000(0) 0.247000(0) 0.261000(0) 0.260000(0) 0.270000(0)
+#&gt;   5  0.401000(0) 0.426000(0) 0.362000(0) 0.343000(0) 0.342000(0) 0.318000(0)
+#&gt;   6  0.503000(0) 0.467000(0) 0.484000(0) 0.422000(0) 0.401000(0) 0.403000(0)
+#&gt;   7  0.573000(0) 0.547000(0) 0.553000(0) 0.555000(0) 0.463000(0) 0.500000(0)
+#&gt;   8  0.711000(0) 0.644000(0) 0.616000(0) 0.647000(0) 0.633000(0) 0.573000(0)
+#&gt;   9  0.747000(0) 0.706000(0) 0.759000(0) 0.701000(0) 0.652000(0) 0.683000(0)
+#&gt;   10 0.817000(0) 0.897000(0) 0.837000(0) 0.760000(0) 0.744000(0) 0.730000(0)
+#&gt;     year
+#&gt; age  1993        1994        1995        1996        1997        1998       
+#&gt;   1  0.050000(0) 0.053000(0) 0.050000(0) 0.044000(0) 0.035000(0) 0.038000(0)
+#&gt;   2  0.119000(0) 0.141000(0) 0.142000(0) 0.117000(0) 0.115000(0) 0.081000(0)
+#&gt;   3  0.208000(0) 0.214000(0) 0.254000(0) 0.229000(0) 0.233000(0) 0.207000(0)
+#&gt;   4  0.315000(0) 0.290000(0) 0.336000(0) 0.368000(0) 0.359000(0) 0.333000(0)
+#&gt;   5  0.330000(0) 0.360000(0) 0.399000(0) 0.390000(0) 0.439000(0) 0.474000(0)
+#&gt;   6  0.391000(0) 0.404000(0) 0.448000(0) 0.462000(0) 0.492000(0) 0.577000(0)
+#&gt;   7  0.490000(0) 0.462000(0) 0.509000(0) 0.488000(0) 0.521000(0) 0.581000(0)
+#&gt;   8  0.587000(0) 0.533000(0) 0.584000(0) 0.554000(0) 0.543000(0) 0.648000(0)
+#&gt;   9  0.633000(0) 0.653000(0) 0.678000(0) 0.660000(0) 0.627000(0) 0.656000(0)
+#&gt;   10 0.723000(0) 0.702000(0) 0.789000(0) 0.791000(0) 0.734000(0) 0.642000(0)
+#&gt;     year
+#&gt; age  1999        2000        2001        2002        2003        2004       
+#&gt;   1  0.044000(0) 0.051000(0) 0.061000(0) 0.048000(0) 0.057000(0) 0.047000(0)
+#&gt;   2  0.091000(0) 0.106000(0) 0.122000(0) 0.118000(0) 0.111000(0) 0.116000(0)
+#&gt;   3  0.150000(0) 0.165000(0) 0.202000(0) 0.213000(0) 0.227000(0) 0.201000(0)
+#&gt;   4  0.319000(0) 0.219000(0) 0.233000(0) 0.301000(0) 0.269000(0) 0.306000(0)
+#&gt;   5  0.437000(0) 0.408000(0) 0.331000(0) 0.319000(0) 0.344000(0) 0.384000(0)
+#&gt;   6  0.524000(0) 0.467000(0) 0.452000(0) 0.403000(0) 0.391000(0) 0.430000(0)
+#&gt;   7  0.586000(0) 0.649000(0) 0.560000(0) 0.446000(0) 0.464000(0) 0.489000(0)
+#&gt;   8  0.644000(0) 0.695000(0) 0.641000(0) 0.612000(0) 0.600000(0) 0.495000(0)
+#&gt;   9  0.664000(0) 0.656000(0) 0.798000(0) 0.685000(0) 0.714000(0) 0.780000(0)
+#&gt;   10 0.620000(0) 0.744000(0) 0.816000(0) 0.781000(0) 0.960000(0) 0.921000(0)
+#&gt;     year
+#&gt; age  2005        2006        2007        2008        2009        2010       
+#&gt;   1  0.053000(0) 0.052000(0) 0.047000(0) 0.048000(0) 0.052000(0) 0.053000(0)
+#&gt;   2  0.106000(0) 0.130000(0) 0.093000(0) 0.114000(0) 0.114000(0) 0.116000(0)
+#&gt;   3  0.216000(0) 0.190000(0) 0.235000(0) 0.196000(0) 0.194000(0) 0.179000(0)
+#&gt;   4  0.237000(0) 0.316000(0) 0.238000(0) 0.274000(0) 0.344000(0) 0.340000(0)
+#&gt;   5  0.378000(0) 0.354000(0) 0.337000(0) 0.355000(0) 0.373000(0) 0.361000(0)
+#&gt;   6  0.422000(0) 0.424000(0) 0.394000(0) 0.429000(0) 0.412000(0) 0.401000(0)
+#&gt;   7  0.434000(0) 0.439000(0) 0.458000(0) 0.484000(0) 0.472000(0) 0.448000(0)
+#&gt;   8  0.527000(0) 0.506000(0) 0.412000(0) 0.627000(0) 0.540000(0) 0.572000(0)
+#&gt;   9  0.621000(0) 0.583000(0) 0.526000(0) 0.598000(0) 0.565000(0) 0.568000(0)
+#&gt;   10 0.815000(0) 0.688000(0) 0.512000(0) 0.449000(0) 0.576000(0) 0.655000(0)
+#&gt;     year
+#&gt; age  2011        2012        2013        2014        2015        2016       
+#&gt;   1  0.039000(0) 0.052000(0) 0.043000(0) 0.048000(0) 0.024000(0) 0.030000(0)
+#&gt;   2  0.100000(0) 0.093000(0) 0.107000(0) 0.104000(0) 0.065000(0) 0.066000(0)
+#&gt;   3  0.187000(0) 0.142000(0) 0.153000(0) 0.158000(0) 0.120000(0) 0.117000(0)
+#&gt;   4  0.209000(0) 0.188000(0) 0.208000(0) 0.202000(0) 0.207000(0) 0.198000(0)
+#&gt;   5  0.355000(0) 0.331000(0) 0.320000(0) 0.312000(0) 0.279000(0) 0.260000(0)
+#&gt;   6  0.483000(0) 0.393000(0) 0.354000(0) 0.380000(0) 0.323000(0) 0.329000(0)
+#&gt;   7  0.438000(0) 0.484000(0) 0.434000(0) 0.439000(0) 0.379000(0) 0.380000(0)
+#&gt;   8  0.422000(0) 0.479000(0) 0.493000(0) 0.484000(0) 0.435000(0) 0.434000(0)
+#&gt;   9  0.530000(0) 0.480000(0) 0.662000(0) 0.458000(0) 0.465000(0) 0.479000(0)
+#&gt;   10 0.580000(0) 0.518000(0) 0.468000(0) 0.615000(0) 0.457000(0) 0.514000(0)
+#&gt;     year
+#&gt; age  2017        2018        2019        2020        2021        2022       
+#&gt;   1  0.032000(0) 0.028667(0) 0.028667(0) 0.028667(0) 0.028667(0) 0.028667(0)
+#&gt;   2  0.069000(0) 0.066667(0) 0.066667(0) 0.066667(0) 0.066667(0) 0.066667(0)
+#&gt;   3  0.132000(0) 0.123000(0) 0.123000(0) 0.123000(0) 0.123000(0) 0.123000(0)
+#&gt;   4  0.181000(0) 0.195333(0) 0.195333(0) 0.195333(0) 0.195333(0) 0.195333(0)
+#&gt;   5  0.270000(0) 0.269667(0) 0.269667(0) 0.269667(0) 0.269667(0) 0.269667(0)
+#&gt;   6  0.333000(0) 0.328333(0) 0.328333(0) 0.328333(0) 0.328333(0) 0.328333(0)
+#&gt;   7  0.359000(0) 0.372667(0) 0.372667(0) 0.372667(0) 0.372667(0) 0.372667(0)
+#&gt;   8  0.458000(0) 0.442333(0) 0.442333(0) 0.442333(0) 0.442333(0) 0.442333(0)
+#&gt;   9  0.476000(0) 0.473333(0) 0.473333(0) 0.473333(0) 0.473333(0) 0.473333(0)
+#&gt;   10 0.557000(0) 0.509333(0) 0.509333(0) 0.509333(0) 0.509333(0) 0.509333(0)
+#&gt;     year
+#&gt; age  2023        2024        2025        2026        2027        2028       
+#&gt;   1  0.028667(0) 0.028667(0) 0.028667(0) 0.028667(0) 0.028667(0) 0.028667(0)
+#&gt;   2  0.066667(0) 0.066667(0) 0.066667(0) 0.066667(0) 0.066667(0) 0.066667(0)
+#&gt;   3  0.123000(0) 0.123000(0) 0.123000(0) 0.123000(0) 0.123000(0) 0.123000(0)
+#&gt;   4  0.195333(0) 0.195333(0) 0.195333(0) 0.195333(0) 0.195333(0) 0.195333(0)
+#&gt;   5  0.269667(0) 0.269667(0) 0.269667(0) 0.269667(0) 0.269667(0) 0.269667(0)
+#&gt;   6  0.328333(0) 0.328333(0) 0.328333(0) 0.328333(0) 0.328333(0) 0.328333(0)
+#&gt;   7  0.372667(0) 0.372667(0) 0.372667(0) 0.372667(0) 0.372667(0) 0.372667(0)
+#&gt;   8  0.442333(0) 0.442333(0) 0.442333(0) 0.442333(0) 0.442333(0) 0.442333(0)
+#&gt;   9  0.473333(0) 0.473333(0) 0.473333(0) 0.473333(0) 0.473333(0) 0.473333(0)
+#&gt;   10 0.509333(0) 0.509333(0) 0.509333(0) 0.509333(0) 0.509333(0) 0.509333(0)
+#&gt;     year
+#&gt; age  2029       
+#&gt;   1  0.028667(0)
+#&gt;   2  0.066667(0)
+#&gt;   3  0.123000(0)
+#&gt;   4  0.195333(0)
+#&gt;   5  0.269667(0)
+#&gt;   6  0.328333(0)
+#&gt;   7  0.372667(0)
+#&gt;   8  0.442333(0)
+#&gt;   9  0.473333(0)
+#&gt;   10 0.509333(0)
+#&gt; 
+#&gt; units:  kg</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>stk<span class="sc">@</span>m</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; An object of class &quot;FLQuant&quot;
+#&gt; iters:  20 
+#&gt; 
+#&gt; , , unit = unique, season = all, area = unique
+#&gt; 
+#&gt;     year
+#&gt; age  1957   1958   1959   1960   1961   1962   1963   1964   1965   1966  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  1967   1968   1969   1970   1971   1972   1973   1974   1975   1976  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  1977   1978   1979   1980   1981   1982   1983   1984   1985   1986  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  1987   1988   1989   1990   1991   1992   1993   1994   1995   1996  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  1997   1998   1999   2000   2001   2002   2003   2004   2005   2006  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  2007   2008   2009   2010   2011   2012   2013   2014   2015   2016  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  2017   2018   2019   2020   2021   2022   2023   2024   2025   2026  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0) 0.1(0)
+#&gt;     year
+#&gt; age  2027   2028   2029  
+#&gt;   1  0.1(0) 0.1(0) 0.1(0)
+#&gt;   2  0.1(0) 0.1(0) 0.1(0)
+#&gt;   3  0.1(0) 0.1(0) 0.1(0)
+#&gt;   4  0.1(0) 0.1(0) 0.1(0)
+#&gt;   5  0.1(0) 0.1(0) 0.1(0)
+#&gt;   6  0.1(0) 0.1(0) 0.1(0)
+#&gt;   7  0.1(0) 0.1(0) 0.1(0)
+#&gt;   8  0.1(0) 0.1(0) 0.1(0)
+#&gt;   9  0.1(0) 0.1(0) 0.1(0)
+#&gt;   10 0.1(0) 0.1(0) 0.1(0)
+#&gt; 
+#&gt; units:  m</code></pre>
+</div>
+</div>
+<div id="configuración-de-los-elementos-de-error-de-observación"
+class="section level1">
+<h1>CONFIGURACIÓN DE LOS ELEMENTOS DE ERROR DE OBSERVACIÓN</h1>
+<p>Estimar las capturabilidades del índice a partir del ajuste
+<code>a4a</code> (sin simulación)</p>
+<p>El error de observación se introduce a través del índice de
+capturabilidad por edad.</p>
+<p>Configure el objeto <code>FLIndices</code> y rellénelo (tenga en
+cuenta que <code>FLIndices</code> tiene potencialmente más de un índice,
+de ahí el bucle for)</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>idcs <span class="ot">&lt;-</span> <span class="fu">FLIndices</span>()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(idx)){</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   Set up FLQuants and calculate mean and sd for catchability</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  lst        <span class="ot">&lt;-</span> <span class="fu">mcf</span>(<span class="fu">list</span>(<span class="fu">index</span>(idx[[i]]), <span class="fu">stock.n</span>(stk0))) <span class="co"># make FLQuants same dimensions</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  idx.lq     <span class="ot">&lt;-</span> <span class="fu">log</span>(lst[[<span class="dv">1</span>]]<span class="sc">/</span>lst[[<span class="dv">2</span>]]) <span class="co"># log catchability of index</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  idx.qmu    <span class="ot">&lt;-</span> idx.qsig <span class="ot">&lt;-</span> <span class="fu">stock.n</span>(<span class="fu">iter</span>(stk,<span class="dv">1</span>)) <span class="co"># create quants</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  idx.qmu[]  <span class="ot">&lt;-</span> <span class="fu">yearMeans</span>(idx.lq) <span class="co"># allocate same mean-at-age to every year</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  idx.qsig[] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">yearVars</span>(idx.lq)) <span class="co"># allocate same sd-at-age to every year</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   Build index catchability based on lognormal distribution with mean and sd calculated above</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  idx.q    <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(it, idx.qmu, idx.qsig)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  idx_temp <span class="ot">&lt;-</span> idx.q <span class="sc">*</span> <span class="fu">stock.n</span>(stk)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  idx_temp <span class="ot">&lt;-</span> <span class="fu">FLIndex</span>(<span class="at">index=</span>idx_temp, <span class="at">index.q=</span>idx.q) <span class="co"># generate initial index</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">range</span>(idx_temp)[<span class="fu">c</span>(<span class="st">&quot;startf&quot;</span>, <span class="st">&quot;endf&quot;</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>) <span class="co"># timing of index (as proportion of year)</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  idcs[[i]] <span class="ot">&lt;-</span> idx_temp</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(idcs) <span class="ot">&lt;-</span> <span class="fu">names</span>(idx)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>idx<span class="ot">&lt;-</span>idcs[<span class="dv">1</span>]</span></code></pre></div>
+</div>
+<div id="configurar-el-loop-de-mse" class="section level1">
+<h1>CONFIGURAR EL LOOP DE MSE</h1>
+<div id="funciones-necesarias" class="section level2">
+<h2>Funciones necesarias</h2>
+<div id="función-para-el-error-de-observación-o" class="section level3">
+<h3>Función para el error de observación <code>o</code></h3>
+<p>En este tutorial, el error de observación se aplica a los números de
+la población del modelo operativo para obtener un índice de abundancia.
+Esto se implementa a través del índice de capturabilidad por edad. El
+error de observación se agrega durante cada año de la ventana de
+proyección y, por lo tanto, se trata más fácilmente en una función.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># * Observation error model **</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>o <span class="ot">&lt;-</span> <span class="cf">function</span>(stk, idx, assessmentYear, dataYears) {</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dataYears is a position vector, not the years themselves</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  stk.tmp <span class="ot">&lt;-</span> stk[, dataYears]</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add small amount to avoid zeros</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">catch.n</span>(stk.tmp) <span class="ot">&lt;-</span> <span class="fu">catch.n</span>(stk.tmp) <span class="sc">+</span> <span class="fl">0.1</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Generate the indices - just data years</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  idx.tmp <span class="ot">&lt;-</span> <span class="fu">lapply</span>(idx, <span class="cf">function</span>(x) x[,dataYears])</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate observed index</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(idx)) <span class="fu">index</span>(idx[[i]])[, assessmentYear] <span class="ot">&lt;-</span>  <span class="fu">stock.n</span>(stk)[, assessmentYear]<span class="sc">*</span><span class="fu">index.q</span>(idx[[i]])[, assessmentYear]</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">stk=</span>stk.tmp, <span class="at">idx=</span>idx.tmp, <span class="at">idx.om=</span>idx))</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="función-para-el-modelo-de-evaluación-de-stock-xsa"
+class="section level3">
+<h3>Función para el modelo de evaluación de stock <code>xsa</code></h3>
+<p>El modelo de evaluación utilizado para parametrizar el HCR es
+<code>XSA</code>, a través de <code>FLXSA</code>. Esta función establece
+los parámetros de control para <code>FLXSA</code> y ajusta la
+evaluación.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># * XSA assessment model **</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>xsa <span class="ot">&lt;-</span> <span class="cf">function</span>(stk, idx){</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set up XSA settings</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  control  <span class="ot">&lt;-</span> <span class="fu">FLXSA.control</span>(<span class="at">tol =</span> <span class="fl">1e-09</span>, </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">maxit=</span><span class="dv">99</span>, </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">min.nse=</span><span class="fl">0.3</span>, </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">fse=</span><span class="fl">2.0</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">rage =</span> <span class="sc">-</span><span class="dv">1</span>, </span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">qage =</span> <span class="fu">range</span>(stk)[<span class="st">&quot;max&quot;</span>]<span class="sc">-</span><span class="dv">1</span>, </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shk.n =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shk.f =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shk.yrs =</span> <span class="dv">5</span>, </span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shk.ages=</span> <span class="dv">5</span>,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">window =</span> <span class="dv">100</span>, </span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>                            <span class="at">tsrange =</span> <span class="dv">99</span>, </span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>                            <span class="at">tspower =</span> <span class="dv">0</span>)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit XSA</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">FLXSA</span>(stk, idx, control)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convergence diagnostic (quick and dirty)</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  maxit <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;maxit&quot;</span> <span class="ot">=</span> fit<span class="sc">@</span>control<span class="sc">@</span>maxit)</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update stk</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  stk   <span class="ot">&lt;-</span> <span class="fu">transform</span>(stk, </span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>                     <span class="at">harvest =</span> <span class="fu">harvest</span>(fit), </span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stock.n =</span> <span class="fu">stock.n</span>(fit))</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">stk =</span> stk, <span class="at">converge =</span> maxit))</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="objeto-control-para-proyecciones-getctrl"
+class="section level3">
+<h3>Objeto control para proyecciones <code>getCtrl</code></h3>
+<p>El método <code>fwd</code> de <code>FLash</code> necesita un objeto
+de control, que se establece mediante esta función.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># * Control object for projections **</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>getCtrl <span class="ot">&lt;-</span> <span class="cf">function</span>(values, quantity, years, it){</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  dnms <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">iter=</span><span class="dv">1</span><span class="sc">:</span>it, <span class="at">year=</span>years, <span class="fu">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;val&quot;</span>, <span class="st">&quot;max&quot;</span>))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  arr0 <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>, <span class="at">dimnames=</span>dnms, <span class="at">dim=</span><span class="fu">unlist</span>(<span class="fu">lapply</span>(dnms, length)))</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  arr0[,,<span class="st">&quot;val&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">unlist</span>(values)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  arr0 <span class="ot">&lt;-</span> <span class="fu">aperm</span>(arr0, <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  ctrl <span class="ot">&lt;-</span> <span class="fu">fwdControl</span>(<span class="fu">data.frame</span>(<span class="at">year=</span>years, </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">quantity=</span>quantity, </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                                <span class="at">val=</span><span class="cn">NA</span>)) </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  ctrl<span class="sc">@</span>trgtArray <span class="ot">&lt;-</span> arr0</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  ctrl</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="inicialización-de-mse" class="section level1">
+<h1>INICIALIZACIÓN DE MSE</h1>
+<p>El primer año de la ventana de proyección es el año intermedio, para
+el cual, siguiendo el cronograma del ICES WG, ya tiene un
+<strong>TAC</strong>. Para este tutorial, se asume que el
+<strong>TAC</strong> en el último año de datos es la captura realizada
+en <code>stk</code> para el mismo año, mientras que el
+<strong>TAC</strong> en el año intermedio se establece igual al
+<strong>TAC</strong> en el último año de datos. Luego, el objeto
+<code>stk</code> debe proyectarse durante el año intermedio aplicando el
+<strong>TAC</strong> en el año intermedio con <code>fwd</code>.</p>
+<p><strong>NOTA: Dorleta fija un valor el TAC</strong></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vy <span class="ot">&lt;-</span> <span class="fu">ac</span>(iy<span class="sc">:</span>fy)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>TAC <span class="ot">&lt;-</span> <span class="fu">FLQuant</span>(<span class="cn">NA</span>, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">dimnames=</span><span class="fu">list</span>(<span class="at">TAC=</span><span class="st">&quot;all&quot;</span>, </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">year=</span><span class="fu">c</span>(dy,vy), </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">iter=</span><span class="dv">1</span><span class="sc">:</span>it))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>TAC[,<span class="fu">ac</span>(dy)] <span class="ot">&lt;-</span> <span class="dv">140000</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>TAC[,<span class="fu">ac</span>(iy)] <span class="ot">&lt;-</span> TAC[,<span class="fu">ac</span>(dy)] <span class="co">#assume same TAC in the first intermediate year</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">getCtrl</span>(<span class="fu">c</span>(TAC[,<span class="fu">ac</span>(iy)]),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;catch&quot;</span>, </span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                iy, </span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                it)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the operating model FLStock object</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>stk.om <span class="ot">&lt;-</span> <span class="fu">fwd</span>(stk, </span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">control=</span>ctrl, </span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">sr=</span>srbh, </span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">sr.residuals =</span> <span class="fu">exp</span>(srbh.res), </span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">sr.residuals.mult =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="empezar-el-loop-mse" class="section level1">
+<h1>EMPEZAR EL LOOP MSE</h1>
+<p>El loop MSE requiere lo siguiente:</p>
+<ul>
+<li>modelo de error de observación a aplicar para generar el índice de
+abundancia,</li>
+<li>la evaluación del stock (<code>XSA</code>) que se aplicará
+utilizando este índice para generar el ‘objeto de stock’ del
+procedimiento de gestión <code>stk.mp</code>,</li>
+<li>la estimación de SSB resultante que se usará en la HCR, junto con
+los puntos de referencia obtenidos anteriormente, para derivar
+<code>F objetivo</code> para el año TAC (el año posterior al año
+intermedio), y</li>
+<li>el TAC asociado con el <code>F objetivo</code> se calculará
+aplicando <code>fwd</code> al <code>stk.mp</code>.</li>
+</ul>
+<p>El paso final del loop MSE es aplicar el TAC al ‘objeto stock’ del
+modelo operativo, <code>stk.om</code>, mediante <code>fwd</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">231</span>) <span class="co"># set seed to ensure comparability between different runs</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> vy[<span class="sc">-</span><span class="fu">length</span>(vy)]){</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set up simulations parameters</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  ay <span class="ot">&lt;-</span> <span class="fu">an</span>(i)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(i, <span class="st">&quot; &lt; &quot;</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flush.console</span>()</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  vy0 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(ay<span class="sc">-</span>y0)              <span class="co"># data years (positions vector) - one less than current year</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  sqy <span class="ot">&lt;-</span> (ay<span class="sc">-</span>y0<span class="sc">-</span>nsqy<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(ay<span class="sc">-</span>y0) <span class="co"># status quo years (positions vector) - one less than current year</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply observation error</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  oem    <span class="ot">&lt;-</span> <span class="fu">o</span>(stk.om, idx, i, vy0) </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  stk.mp <span class="ot">&lt;-</span> oem<span class="sc">$</span>stk</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  idx.mp <span class="ot">&lt;-</span> oem<span class="sc">$</span>idx</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  idx    <span class="ot">&lt;-</span> oem<span class="sc">$</span>idx.om</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># perform assessment</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  out.assess <span class="ot">&lt;-</span> <span class="fu">xsa</span>(stk.mp, idx.mp)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  stk.mp     <span class="ot">&lt;-</span> out.assess<span class="sc">$</span>stk</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply ICES MSY-like Rule to obtain Ftrgt (note this is not the ICES MSY rule, but is similar)</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  flag  <span class="ot">&lt;-</span> <span class="fu">ssb</span>(stk.mp)[,<span class="fu">ac</span>(ay<span class="dv">-1</span>)]<span class="sc">&lt;</span>Bpa</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  Ftrgt <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(flag,</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ssb</span>(stk.mp)[,<span class="fu">ac</span>(ay<span class="dv">-1</span>)]<span class="sc">*</span>Fmsy<span class="sc">/</span>Bpa,</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>                  Fmsy) </span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># project the perceived stock to get the TAC for ay+1</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>  fsq.mp    <span class="ot">&lt;-</span> <span class="fu">yearMeans</span>(<span class="fu">fbar</span>(stk.mp)[,sqy]) <span class="co"># Use status quo years defined above</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>  ctrl      <span class="ot">&lt;-</span> <span class="fu">getCtrl</span>(<span class="fu">c</span>(fsq.mp, Ftrgt), <span class="st">&quot;f&quot;</span>, <span class="fu">c</span>(ay, ay<span class="sc">+</span><span class="dv">1</span>), it)</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>  stk.mp    <span class="ot">&lt;-</span> <span class="fu">stf</span>(stk.mp, <span class="dv">2</span>)</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>  gmean_rec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(<span class="fu">yearMeans</span>(<span class="fu">log</span>(<span class="fu">rec</span>(stk.mp)))))</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>  stk.mp    <span class="ot">&lt;-</span> <span class="fu">fwd</span>(stk.mp, </span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>                   <span class="at">control=</span>ctrl, </span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sr=</span><span class="fu">list</span>(<span class="at">model=</span><span class="st">&quot;mean&quot;</span>, </span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>                           <span class="at">params =</span> <span class="fu">FLPar</span>(gmean_rec,</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">iter=</span>it)))</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>  TAC[,<span class="fu">ac</span>(ay<span class="sc">+</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="fu">catch</span>(stk.mp)[,<span class="fu">ac</span>(ay<span class="sc">+</span><span class="dv">1</span>)]</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply the TAC to the operating model stock and project the population one year forward.</span></span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>  ctrl   <span class="ot">&lt;-</span> <span class="fu">getCtrl</span>(<span class="fu">c</span>(TAC[,<span class="fu">ac</span>(ay<span class="sc">+</span><span class="dv">1</span>)]), <span class="st">&quot;catch&quot;</span>, ay<span class="sc">+</span><span class="dv">1</span>, it)</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>  stk.om <span class="ot">&lt;-</span> <span class="fu">fwd</span>(stk.om, </span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span>ctrl,</span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>                <span class="at">sr=</span>srbh, </span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>                <span class="at">sr.residuals =</span> <span class="fu">exp</span>(srbh.res), </span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>                <span class="at">sr.residuals.mult =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; 2018  &lt; 2019  &lt; 2020  &lt; 2021  &lt; 2022  &lt; 2023  &lt; 2024  &lt; 2025  &lt; 2026  &lt; 2027  &lt; 2028  &lt;</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#save(stk.om, file = &#39;C:/users/dgarcia/Dropbox/FLBEIA_CursoIEO/Tutorials/02_MSE_with_FLR/stk.RData&#39;)</span></span></code></pre></div>
+</div>
+<div id="estadísticas-de-desempeño" class="section level1">
+<h1>ESTADÍSTICAS DE DESEMPEÑO</h1>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Some example performance statstics, but first isolate the projection period</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>stk.tmp <span class="ot">&lt;-</span> <span class="fu">window</span>(stk.om,<span class="at">start=</span>iy)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># annual probability of being below Blim </span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>risky.Bmsy <span class="ot">&lt;-</span> <span class="fu">iterSums</span>((<span class="fu">ssb</span>(stk.tmp)<span class="sc">/</span>Bmsy)<span class="sc">&lt;</span><span class="dv">1</span>)<span class="sc">/</span>it</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>risky.Bpa  <span class="ot">&lt;-</span> <span class="fu">iterSums</span>((<span class="fu">ssb</span>(stk.tmp)<span class="sc">/</span>Bpa)<span class="sc">&lt;</span><span class="dv">1</span>)<span class="sc">/</span>it</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>risky.Blim <span class="ot">&lt;-</span> <span class="fu">iterSums</span>((<span class="fu">ssb</span>(stk.tmp)<span class="sc">/</span>Blim)<span class="sc">&lt;</span><span class="dv">1</span>)<span class="sc">/</span>it</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>risky.Bmsy </span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; An object of class &quot;FLQuant&quot;
+#&gt; , , unit = unique, season = all, area = unique
+#&gt; 
+#&gt;      year
+#&gt; age   2018 2019 2020 2021 2022 2023 2024 2025 2026 2027 2028 2029
+#&gt;   all 1.00 1.00 1.00 0.95 0.80 0.70 0.55 0.45 0.40 0.40 0.35 0.40
+#&gt; 
+#&gt; units:  NA</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>risky.Bpa</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; An object of class &quot;FLQuant&quot;
+#&gt; , , unit = unique, season = all, area = unique
+#&gt; 
+#&gt;      year
+#&gt; age   2018 2019 2020 2021 2022 2023 2024 2025 2026 2027 2028 2029
+#&gt;   all 0    0    0    0    0    0    0    0    0    0    0    0   
+#&gt; 
+#&gt; units:  NA</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>risky.Blim</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; An object of class &quot;FLQuant&quot;
+#&gt; , , unit = unique, season = all, area = unique
+#&gt; 
+#&gt;      year
+#&gt; age   2018 2019 2020 2021 2022 2023 2024 2025 2026 2027 2028 2029
+#&gt;   all 0    0    0    0    0    0    0    0    0    0    0    0   
+#&gt; 
+#&gt; units:  NA</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mean probability of being below Bmsy in the first half of the projection period</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(risky.Bmsy [,<span class="dv">1</span><span class="sc">:</span><span class="fu">floor</span>(<span class="fu">length</span>(risky.Bmsy)<span class="sc">/</span><span class="dv">2</span>)])</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; [1] 0.9083333</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...and second half </span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(risky.Bmsy [,(<span class="fu">floor</span>(<span class="fu">length</span>(risky.Bmsy)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(risky.Bmsy)])</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; [1] 0.425</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot of SSB relative to Bmsy</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(data<span class="sc">~</span>year,<span class="at">data=</span><span class="fu">as.data.frame</span>(<span class="fu">ssb</span>(stk.tmp)),<span class="at">main=</span><span class="st">&quot;SSB&quot;</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>Bmsy,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">FLStocks</span>(<span class="at">stk.om=</span>stk.om, <span class="at">stk.mp=</span>stk.mp)) <span class="sc">+</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span><span class="dv">2009</span>))</span></code></pre></div>
+<p><img src="MSEwithFLR_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

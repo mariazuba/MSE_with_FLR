@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Ejemplo3.knit</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Inicio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="MSEwithFLR.html">MSE con FLR</a>
+</li>
+<li>
+  <a href="Ejemplo1.html">Ejemplo 1</a>
+</li>
+<li>
+  <a href="Ejemplo2.html">Ejemplo 2</a>
+</li>
+<li>
+  <a href="Ejemplo3.html">Ejemplo 3</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div
+id="in-the-om-change-the-natural-mortality-make-it-variable-in-the-range-0.050.2"
+class="section level1">
+<h1>2. In the OM change the natural mortality, make it variable in the
+range [0.05,0.2]</h1>
+</div>
+<div
+id="with-natural-mortality-variable-in-the-om-in-the-observation-of-the-stock-use-m-0.1"
+class="section level1">
+<h1>3. With natural mortality variable in the OM, in the observation of
+the stock use M = 0.1</h1>
+<style type="text/css">
+
+
+.scroll-200{
+            max-height: 200px; 
+            overflow-y: auto; 
+            background-color: #f1f1f1;
+            }
+</style>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loads all necessary packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLa4a)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLash)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLXSA)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FLBRP)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplotFL)</span></code></pre></div>
+<div id="conditioning-the-operating-model" class="section level2">
+<h2>CONDITIONING THE OPERATING MODEL</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in stock assessment data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ple4)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ple4.index)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>stk <span class="ot">&lt;-</span> ple4 </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">FLIndices</span>(<span class="at">idx=</span>ple4.index)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the iteration and projection window parameters</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>it <span class="ot">&lt;-</span> <span class="dv">20</span>                    <span class="co"># iterations</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">&lt;-</span> <span class="fu">range</span>(stk)[<span class="st">&quot;minyear&quot;</span>] <span class="co"># initial data year</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>dy <span class="ot">&lt;-</span> <span class="fu">range</span>(stk)[<span class="st">&quot;maxyear&quot;</span>] <span class="co"># final data year</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>iy <span class="ot">&lt;-</span> dy<span class="sc">+</span><span class="dv">1</span>                  <span class="co"># initial year of projection (also intermediate year)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>ny <span class="ot">&lt;-</span> <span class="dv">12</span>    <span class="co"># number of years to project from initial year</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>fy <span class="ot">&lt;-</span> dy<span class="sc">+</span>ny <span class="co"># final year</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>nsqy <span class="ot">&lt;-</span> <span class="dv">3</span>   <span class="co"># number of years to compute status quo metrics</span></span></code></pre></div>
+</div>
+<div id="fit-stock-assessment-model-a4a" class="section level2">
+<h2><strong>Fit stock assessment model a4a</strong></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the catchability submodel with a smoothing spline (setting up a &#39;list&#39; allows for more than one index) </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>qmod <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="sc">~</span><span class="fu">s</span>(age, <span class="at">k=</span><span class="dv">6</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the fishing mortality submodel as a tensor spline, which allows age and year to interact</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>fmod <span class="ot">&lt;-</span> <span class="er">~</span><span class="fu">te</span>(<span class="fu">replace</span>(age, age<span class="sc">&gt;</span><span class="dv">9</span>,<span class="dv">9</span>), year, <span class="at">k=</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">8</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the MCMC parameters</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>mcsave <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>mcmc   <span class="ot">&lt;-</span> it <span class="sc">*</span> mcsave</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sca</span>(stk, </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>           idx, </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">fmodel =</span> fmod, </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">qmodel =</span> qmod, </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">fit =</span> <span class="st">&quot;MCMC&quot;</span>, </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">mcmc =</span> <span class="fu">SCAMCMC</span>(<span class="at">mcmc =</span> mcmc, <span class="at">mcsave =</span> mcsave, <span class="at">mcprobe =</span> <span class="fl">0.4</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the FLStock object</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>stk <span class="ot">&lt;-</span> stk <span class="sc">+</span> fit</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduce to keep one iteration only for reference points</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>stk0 <span class="ot">&lt;-</span> <span class="fu">qapply</span>(stk, iterMedians)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ** Fit the stock-recruit model **</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>srbh  <span class="ot">&lt;-</span> <span class="fu">fmle</span>(<span class="fu">as.FLSR</span>(stk, </span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                      <span class="at">model=</span><span class="st">&quot;bevholt&quot;</span>), </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method=</span><span class="st">&quot;L-BFGS-B&quot;</span>, </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                      <span class="at">lower=</span><span class="fu">c</span>(<span class="fl">1e-6</span>, <span class="fl">1e-6</span>), </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                      <span class="at">upper=</span><span class="fu">c</span>(<span class="fu">max</span>(<span class="fu">rec</span>(stk)) <span class="sc">*</span> <span class="dv">3</span>, <span class="cn">Inf</span>))</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; final  value -20.758968 
+#&gt; converged
+#&gt; final  value -20.758968 
+#&gt; converged
+#&gt; final  value -20.768159 
+#&gt; converged
+#&gt; final  value -20.935400 
+#&gt; converged
+#&gt; final  value -21.007624 
+#&gt; converged
+#&gt; final  value -20.439052 
+#&gt; converged
+#&gt; final  value -21.316012 
+#&gt; converged
+#&gt; final  value -21.310005 
+#&gt; converged
+#&gt; final  value -20.554047 
+#&gt; converged
+#&gt; final  value -20.004885 
+#&gt; converged
+#&gt; final  value -18.967237 
+#&gt; converged
+#&gt; final  value -19.170771 
+#&gt; converged
+#&gt; final  value -18.891406 
+#&gt; converged
+#&gt; final  value -18.756519 
+#&gt; converged
+#&gt; final  value -19.229060 
+#&gt; converged
+#&gt; final  value -20.340877 
+#&gt; converged
+#&gt; final  value -20.806457 
+#&gt; converged
+#&gt; final  value -21.515995 
+#&gt; converged
+#&gt; final  value -20.407033 
+#&gt; converged
+#&gt; final  value -20.233131 
+#&gt; converged</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>srbh0 <span class="ot">&lt;-</span> <span class="fu">fmle</span>(<span class="fu">as.FLSR</span>(stk0, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">model=</span><span class="st">&quot;bevholt&quot;</span>), </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method=</span><span class="st">&quot;L-BFGS-B&quot;</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">lower=</span><span class="fu">c</span>(<span class="fl">1e-6</span>, <span class="fl">1e-6</span>), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">upper=</span><span class="fu">c</span>(<span class="fu">max</span>(<span class="fu">rec</span>(stk)) <span class="sc">*</span> <span class="dv">3</span>, <span class="cn">Inf</span>)) </span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; final  value -20.364047 
+#&gt; converged</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate stock-recruit residuals for the projection period</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>srbh.res <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(it, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">FLQuant</span>(<span class="dv">0</span>, <span class="at">dimnames=</span><span class="fu">list</span>(<span class="at">year=</span>iy<span class="sc">:</span>fy)), </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">mean</span>(<span class="fu">c</span>(<span class="fu">apply</span>(<span class="fu">residuals</span>(srbh), <span class="dv">6</span>, sd))))</span></code></pre></div>
+</div>
+<div id="calculate-reference-points" class="section level2">
+<h2><strong>Calculate reference points</strong></h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the reference points</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>brp  <span class="ot">&lt;-</span> <span class="fu">brp</span>(<span class="fu">FLBRP</span>(stk0, srbh0))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Fmsy <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">refpts</span>(brp)[<span class="st">&quot;msy&quot;</span>,<span class="st">&quot;harvest&quot;</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>msy  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">refpts</span>(brp)[<span class="st">&quot;msy&quot;</span>,<span class="st">&quot;yield&quot;</span>])</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>Bmsy <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">refpts</span>(brp)[<span class="st">&quot;msy&quot;</span>,<span class="st">&quot;ssb&quot;</span>])</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>Bpa  <span class="ot">&lt;-</span> <span class="fl">0.5</span><span class="sc">*</span>Bmsy</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>Blim <span class="ot">&lt;-</span> Bpa<span class="sc">/</span><span class="fl">1.4</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#** set up the operating model for the projection window **</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Prepare the FLStock object for projections</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>stk <span class="ot">&lt;-</span> <span class="fu">stf</span>(stk, fy<span class="sc">-</span>dy, nsqy, nsqy)</span></code></pre></div>
+</div>
+<div id="set-up-observation-error-model-elements"
+class="section level2">
+<h2>SET UP OBSERVATION ERROR MODEL ELEMENTS</h2>
+<ul>
+<li>Estimate the index catchabilities from the <code>a4a</code> (without
+simulation)</li>
+<li>Set up the FLIndices object and populate it (note, FLIndices
+potentially has more than one index, hence the for loop)</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>idcs <span class="ot">&lt;-</span> <span class="fu">FLIndices</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(idx)){</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   Set up FLQuants and calculate mean and sd for catchability</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  lst        <span class="ot">&lt;-</span> <span class="fu">mcf</span>(<span class="fu">list</span>(<span class="fu">index</span>(idx[[i]]), <span class="fu">stock.n</span>(stk0))) <span class="co"># make FLQuants same dimensions</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  idx.lq     <span class="ot">&lt;-</span> <span class="fu">log</span>(lst[[<span class="dv">1</span>]]<span class="sc">/</span>lst[[<span class="dv">2</span>]]) <span class="co"># log catchability of index</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  idx.qmu    <span class="ot">&lt;-</span> idx.qsig <span class="ot">&lt;-</span> <span class="fu">stock.n</span>(<span class="fu">iter</span>(stk,<span class="dv">1</span>)) <span class="co"># create quants</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  idx.qmu[]  <span class="ot">&lt;-</span> <span class="fu">yearMeans</span>(idx.lq) <span class="co"># allocate same mean-at-age to every year</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  idx.qsig[] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">yearVars</span>(idx.lq)) <span class="co"># allocate same sd-at-age to every year</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   Build index catchability based on lognormal distribution with mean and sd calculated above</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  idx.q    <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(it, idx.qmu, idx.qsig)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  idx_temp <span class="ot">&lt;-</span> idx.q <span class="sc">*</span> <span class="fu">stock.n</span>(stk)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  idx_temp <span class="ot">&lt;-</span> <span class="fu">FLIndex</span>(<span class="at">index=</span>idx_temp, <span class="at">index.q=</span>idx.q) <span class="co"># generate initial index</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">range</span>(idx_temp)[<span class="fu">c</span>(<span class="st">&quot;startf&quot;</span>, <span class="st">&quot;endf&quot;</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>) <span class="co"># timing of index (as proportion of year)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  idcs[[i]] <span class="ot">&lt;-</span> idx_temp</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(idcs) <span class="ot">&lt;-</span> <span class="fu">names</span>(idx)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>idx<span class="ot">&lt;-</span>idcs[<span class="dv">1</span>]</span></code></pre></div>
+</div>
+</div>
+<div id="set-up-mse-loop" class="section level1">
+<h1>SET UP MSE LOOP</h1>
+<div id="needed-functions" class="section level2">
+<h2>Needed Functions:</h2>
+<ul>
+<li>Observation error model</li>
+<li>XSA assessment model</li>
+<li>Control object for projections</li>
+</ul>
+<div id="observation-error-model" class="section level3">
+<h3><em>Observation error model</em></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>o <span class="ot">&lt;-</span> <span class="cf">function</span>(stk, idx, assessmentYear, dataYears) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dataYears is a position vector, not the years themselves</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  stk.tmp <span class="ot">&lt;-</span> stk[, dataYears]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add small amount to avoid zeros</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">catch.n</span>(stk.tmp) <span class="ot">&lt;-</span> <span class="fu">catch.n</span>(stk.tmp) <span class="sc">+</span> <span class="fl">0.1</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate the indices - just data years</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  idx.tmp <span class="ot">&lt;-</span> <span class="fu">lapply</span>(idx, <span class="cf">function</span>(x) x[,dataYears])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate observed index</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(idx)) <span class="fu">index</span>(idx[[i]])[, assessmentYear] <span class="ot">&lt;-</span>  <span class="fu">stock.n</span>(stk)[, assessmentYear]<span class="sc">*</span><span class="fu">index.q</span>(idx[[i]])[, assessmentYear]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Change the observation of M in the OM</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  stk.tmp<span class="sc">@</span>m[] <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">stk=</span>stk.tmp, <span class="at">idx=</span>idx.tmp, <span class="at">idx.om=</span>idx))</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="xsa-assessment-model" class="section level3">
+<h3><em>XSA assessment model</em></h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>xsa <span class="ot">&lt;-</span> <span class="cf">function</span>(stk, idx){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set up XSA settings</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  control  <span class="ot">&lt;-</span> <span class="fu">FLXSA.control</span>(<span class="at">tol =</span> <span class="fl">1e-09</span>, <span class="at">maxit=</span><span class="dv">99</span>, <span class="at">min.nse=</span><span class="fl">0.3</span>, <span class="at">fse=</span><span class="fl">2.0</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">rage =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">qage =</span> <span class="fu">range</span>(stk)[<span class="st">&quot;max&quot;</span>]<span class="sc">-</span><span class="dv">1</span>, <span class="at">shk.n =</span> <span class="cn">TRUE</span>, <span class="at">shk.f =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shk.yrs =</span> <span class="dv">5</span>, <span class="at">shk.ages=</span> <span class="dv">5</span>, <span class="at">window =</span> <span class="dv">100</span>, <span class="at">tsrange =</span> <span class="dv">99</span>, <span class="at">tspower =</span> <span class="dv">0</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit XSA</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">FLXSA</span>(stk, idx, control)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convergence diagnostic (quick and dirty)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  maxit <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;maxit&quot;</span> <span class="ot">=</span> fit<span class="sc">@</span>control<span class="sc">@</span>maxit)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update stk</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  stk   <span class="ot">&lt;-</span> <span class="fu">transform</span>(stk, </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">harvest =</span> <span class="fu">harvest</span>(fit), </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stock.n =</span> <span class="fu">stock.n</span>(fit))</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">stk =</span> stk, <span class="at">converge =</span> maxit))</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="control-object-for-projections" class="section level3">
+<h3><em>Control object for projections</em></h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>getCtrl <span class="ot">&lt;-</span> <span class="cf">function</span>(values, quantity, years, it){</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  dnms <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">iter=</span><span class="dv">1</span><span class="sc">:</span>it, <span class="at">year=</span>years, <span class="fu">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;val&quot;</span>, <span class="st">&quot;max&quot;</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  arr0 <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>, <span class="at">dimnames=</span>dnms, <span class="at">dim=</span><span class="fu">unlist</span>(<span class="fu">lapply</span>(dnms, length)))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  arr0[,,<span class="st">&quot;val&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">unlist</span>(values)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  arr0 <span class="ot">&lt;-</span> <span class="fu">aperm</span>(arr0, <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  ctrl <span class="ot">&lt;-</span> <span class="fu">fwdControl</span>(<span class="fu">data.frame</span>(<span class="at">year=</span>years, <span class="at">quantity=</span>quantity, <span class="at">val=</span><span class="cn">NA</span>)) </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ctrl<span class="sc">@</span>trgtArray <span class="ot">&lt;-</span> arr0</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ctrl</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="mse-initialisation" class="section level1">
+<h1>MSE initialisation</h1>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vy <span class="ot">&lt;-</span> <span class="fu">ac</span>(iy<span class="sc">:</span>fy)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>TAC <span class="ot">&lt;-</span> <span class="fu">FLQuant</span>(<span class="cn">NA</span>, <span class="at">dimnames=</span><span class="fu">list</span>(<span class="at">TAC=</span><span class="st">&quot;all&quot;</span>, <span class="at">year=</span><span class="fu">c</span>(dy,vy), <span class="at">iter=</span><span class="dv">1</span><span class="sc">:</span>it))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>TAC[,<span class="fu">ac</span>(dy)] <span class="ot">&lt;-</span> <span class="fu">catch</span>(stk)[,<span class="fu">ac</span>(dy)]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>TAC[,<span class="fu">ac</span>(iy)] <span class="ot">&lt;-</span> TAC[,<span class="fu">ac</span>(dy)] <span class="co">#assume same TAC in the first intermediate year</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">getCtrl</span>(<span class="fu">c</span>(TAC[,<span class="fu">ac</span>(iy)]), <span class="st">&quot;catch&quot;</span>, iy, it)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the operating model FLStock object</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>stk.om <span class="ot">&lt;-</span> <span class="fu">fwd</span>(stk, </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">control=</span>ctrl, </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">sr=</span>srbh, </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">sr.residuals =</span> <span class="fu">exp</span>(srbh.res), </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">sr.residuals.mult =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the m</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>stk.om.merr     <span class="ot">&lt;-</span> stk.om</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>stk.om.merr<span class="sc">@</span>m[] <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">prod</span>(<span class="fu">dim</span>(stk.om<span class="sc">@</span>m)),<span class="fl">0.05</span>,<span class="fl">0.2</span>)</span></code></pre></div>
+</div>
+<div id="start-the-mse-loop" class="section level1">
+<h1>Start the MSE loop</h1>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">231</span>) <span class="co"># set seed to ensure comparability between different runs</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> vy[<span class="sc">-</span><span class="fu">length</span>(vy)]){</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set up simulations parameters</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ay <span class="ot">&lt;-</span> <span class="fu">an</span>(i)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(i, <span class="st">&quot; &gt; &quot;</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flush.console</span>()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  vy0 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(ay<span class="sc">-</span>y0)              <span class="co"># data years (positions vector) - one less than current year</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  sqy <span class="ot">&lt;-</span> (ay<span class="sc">-</span>y0<span class="sc">-</span>nsqy<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(ay<span class="sc">-</span>y0) <span class="co"># status quo years (positions vector) - one less than current year</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply observation error</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  oem    <span class="ot">&lt;-</span> <span class="fu">o</span>(stk.om.merr, idx, i, vy0) </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  stk.mp <span class="ot">&lt;-</span> oem<span class="sc">$</span>stk</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  idx.mp <span class="ot">&lt;-</span> oem<span class="sc">$</span>idx</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  idx    <span class="ot">&lt;-</span> oem<span class="sc">$</span>idx.om</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># perform assessment</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  out.assess <span class="ot">&lt;-</span> <span class="fu">xsa</span>(stk.mp, idx.mp)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  stk.mp     <span class="ot">&lt;-</span> out.assess<span class="sc">$</span>stk</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply ICES MSY-like Rule to obtain Ftrgt (note this is not the ICES MSY rule, but is similar)</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  flag  <span class="ot">&lt;-</span> <span class="fu">ssb</span>(stk.mp)[,<span class="fu">ac</span>(ay<span class="dv">-1</span>)]<span class="sc">&lt;</span>Bpa</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  Ftrgt <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(flag,<span class="fu">ssb</span>(stk.mp)[,<span class="fu">ac</span>(ay<span class="dv">-1</span>)]<span class="sc">*</span>Fmsy<span class="sc">/</span>Bpa,Fmsy) </span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># project the perceived stock to get the TAC for ay+1</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  fsq.mp    <span class="ot">&lt;-</span> <span class="fu">yearMeans</span>(<span class="fu">fbar</span>(stk.mp)[,sqy]) <span class="co"># Use status quo years defined above</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  ctrl      <span class="ot">&lt;-</span> <span class="fu">getCtrl</span>(<span class="fu">c</span>(fsq.mp, Ftrgt), <span class="st">&quot;f&quot;</span>, <span class="fu">c</span>(ay, ay<span class="sc">+</span><span class="dv">1</span>), it)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  stk.mp    <span class="ot">&lt;-</span> <span class="fu">stf</span>(stk.mp, <span class="dv">2</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  gmean_rec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(<span class="fu">yearMeans</span>(<span class="fu">log</span>(<span class="fu">rec</span>(stk.mp)))))</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  stk.mp    <span class="ot">&lt;-</span> <span class="fu">fwd</span>(stk.mp, </span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>                   <span class="at">control=</span>ctrl, </span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sr=</span><span class="fu">list</span>(<span class="at">model=</span><span class="st">&quot;mean&quot;</span>, </span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>                           <span class="at">params =</span> <span class="fu">FLPar</span>(gmean_rec,<span class="at">iter=</span>it)))</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  TAC[,<span class="fu">ac</span>(ay<span class="sc">+</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="fu">catch</span>(stk.mp)[,<span class="fu">ac</span>(ay<span class="sc">+</span><span class="dv">1</span>)]</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply the TAC to the operating model stock and project the population one year forward.</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>  ctrl   <span class="ot">&lt;-</span> <span class="fu">getCtrl</span>(<span class="fu">c</span>(TAC[,<span class="fu">ac</span>(ay<span class="sc">+</span><span class="dv">1</span>)]), <span class="st">&quot;catch&quot;</span>, ay<span class="sc">+</span><span class="dv">1</span>, it)</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>  stk.om.merr <span class="ot">&lt;-</span> <span class="fu">fwd</span>(stk.om.merr, </span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>                     <span class="at">control=</span>ctrl,</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sr=</span>srbh,</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sr.residuals =</span> <span class="fu">exp</span>(srbh.res), </span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sr.residuals.mult =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; 2018  &gt; 2019  &gt; 2020  &gt; 2021  &gt; 2022  &gt; 2023  &gt; 2024  &gt; 2025  &gt; 2026  &gt; 2027  &gt; 2028  &gt;</code></pre>
+</div>
+<div id="performance-statistics" class="section level1">
+<h1>PERFORMANCE STATISTICS</h1>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Some example performance statstics, but first isolate the projection period</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>stk.tmp <span class="ot">&lt;-</span> <span class="fu">window</span>(stk.om.merr,<span class="at">start=</span>iy)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># annual probability of being below Blim </span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>risky <span class="ot">&lt;-</span> <span class="fu">iterSums</span>((<span class="fu">ssb</span>(stk.tmp)<span class="sc">/</span>Blim)<span class="sc">&lt;</span><span class="dv">1</span>)<span class="sc">/</span>it</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mean probability of being below Blim in the first half of the projection period</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(risky[,<span class="dv">1</span><span class="sc">:</span><span class="fu">trunc</span>(<span class="fu">length</span>(risky)<span class="sc">/</span><span class="dv">2</span>)])</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; [1] 0</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...and second half </span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(risky[,(<span class="fu">trunc</span>(<span class="fu">length</span>(risky)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(risky)])</span></code></pre></div>
+<pre class="scroll-200"><code>#&gt; [1] 0</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot of SSB relative to Bmsy</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(data<span class="sc">~</span>year,<span class="at">data=</span><span class="fu">as.data.frame</span>(<span class="fu">ssb</span>(stk.tmp)),<span class="at">main=</span><span class="st">&quot;SSB&quot;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>Bmsy,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Ejemplo3_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">FLStocks</span>(<span class="at">stk.om.merr=</span>stk.om.merr, <span class="at">stk.mp=</span>stk.mp)) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span><span class="dv">2009</span>))</span></code></pre></div>
+<p><img src="Ejemplo3_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

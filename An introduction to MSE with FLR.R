@@ -489,11 +489,88 @@ plotfltStkSum(s2, pdfnm='s2')
 
 
 
+# FLshiny
 
 
 
+## Not run: 
+library(FLBEIAshiny)
+
+getwd()
+setwd("C:\\Curso FLBEIA\\Libraries\\Test Shiny")
+
+#----------------------------------------------------------------
+# Example with the summary indicators stored in data.frame-s
+#----------------------------------------------------------------
+
+data(FLBEIAshiny)
 
 
+flbeiaApp(RefPts = RefPts,bio = bioQ, flt = fltQ, adv = advQ, 
+          fltStk = fltStkQ, mt = mtQ, mtStk = mtStkQ, 
+          years = as.character(2010:2024), 
+          calculate_npv = FALSE, npv =  NULL, npv.y0 = NULL, npv.yrs = NULL) 
+
+
+
+#----------------------------------------------------------------
+# Run FLBEIA first and then use the output to launch flbeiaApp.
+# In this case we use the FLBEIA output directly.
+#----------------------------------------------------------------
+
+library(FLBEIA)
+
+data(oneIt)
+
+one_sc1 <- FLBEIA(biols = oneItBio,
+                  SRs = oneItSR,
+                  BDs = NULL,
+                  fleets = oneItFl,
+                  covars = oneItCv,
+                  indices = NULL,
+                  advice = oneItAdv,
+                  main.ctrl = oneItMainC,
+                  biols.ctrl = oneItBioC,
+                  fleets.ctrl = oneItFlC,
+                  covars.ctrl = oneItCvC,
+                  obs.ctrl = oneItObsC,
+                  assess.ctrl = oneItAssC,
+                  advice.ctrl = oneItAdvC)
+
+# We change the target reference point in HCR and run a second scenario
+
+oneItAdvC$stk1$ref.pts['Fmsy',] <- 0.2
+
+one_sc2 <- FLBEIA(biols = oneItBio,
+                  SRs = oneItSR,
+                  BDs = NULL,
+                  fleets = oneItFl,
+                  covars = oneItCv,
+                  indices = NULL,
+                  advice = oneItAdv,
+                  main.ctrl = oneItMainC,
+                  biols.ctrl = oneItBioC,
+                  fleets.ctrl = oneItFlC,
+                  covars.ctrl = oneItCvC,
+                  obs.ctrl = oneItObsC,
+                  assess.ctrl = oneItAssC,
+                  advice.ctrl = oneItAdvC)
+
+scnms <- c('Ftarget_Fmsy', 'Ftarget_0.15')
+stknms <- 'stk1'
+RefPts2 <- expand.grid( indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"), 
+                        scenario=scnms, stock=stknms, value=NA)[,c(3,2,1,4)]
+RefPts2$value <- c( c(800, 0.11, 800, 550, 0.25, 0.50),  
+                    c(800, 0.2, 800, 550, 0.25, 0.50))
+
+flbeiaObjs2 <- list(Ftarget_Fmsy = one_sc1, Ftarget_0.15 = one_sc2)
+
+
+flbeiaApp( flbeiaObjs = flbeiaObjs2, RefPts = RefPts2, years = ac(2000:2025), 
+           calculate_npv = TRUE, npv.y0 = '2012', npv.yrs = ac(2013:2025)) 
+
+
+## End(Not run) 
 
 
 

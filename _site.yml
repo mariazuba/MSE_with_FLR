@@ -1,0 +1,33 @@
+name: "Curso FLBEIA"
+navbar:
+  title: "Inicio"
+  left:
+    - text: "MSE con FLR"
+      href: MSEwithFLR.html
+    - text: "Ejemplo 1"
+      href: Ejemplo1.html
+    - text: "Ejemplo 2"
+      href: Ejemplo2.html
+    - text: "Ejemplo 3"
+      href: Ejemplo3.html
+    - text: "Ejemplo 4"
+      href: Ejemplo4.html
+output_dir: "."
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc-location: left
+    toc-title: Contenido
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+    code_folding: show
+    self_contained: true
+    code-fold: true
+    code-tools: true
+    code-copy: true
+    code-download: true
+    smooth-scroll: true
+    minimal: true
+    page-layout: full

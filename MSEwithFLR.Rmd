@@ -1,0 +1,456 @@
+---
+title: ""
+---
+
+# MSE con FLR
+
+La Evaluación de la estrategia de gestión (MSE) es un marco para evaluar el desempeño de las Reglas de control de captura (HCR) frente a las incertidumbres predominantes (**Punt et al. 2016**). Este tutorial presenta los pasos básicos para construir un MSE single-species: acondicionamiento del modelo operativo, configuración del modelo de error de observación, construcción de un HCR basado en un modelo simple (basado en el enfoque ICES MSY), realización de simulaciones MSE (incluida la retroalimentación) y producir estadísticas de desempeño.
+
+
+El link del tutorial es el siguiente: https://flr-project.org/doc/An_introduction_to_MSE_using_FLR.html
+
+
+
+```{css,echo=FALSE}
+
+
+.scroll-200{
+            max-height: 200px; 
+            overflow-y: auto; 
+            background-color: #f1f1f1;
+            }
+```
+
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", echo = TRUE, message = FALSE , warning = FALSE,class.output="scroll-200")
+
+```
+
+
+## librarías requeridas
+
+```{r}
+#### Loads all necessary packages #### 
+library(FLa4a)
+library(FLash)
+library(FLXSA)
+library(FLBRP)
+library(ggplotFL)
+
+```
+
+# CONDICIONAMIENTO  DEL MODELO OPERATIVO
+
+El condicionamiento del modelo operativo es un paso clave en la construcción de un análisis MSE, ya que permite que los modelos operativos se consideren "plausibles" en el sentido de que son consistentes con los datos observados. 
+En este tutorial, el modelo de evaluación `a4a` se ajusta a los datos dentro de los objetos `ple4 FLStock` y `ple4.index FLIndex` para producir `stk`, el objeto del modelo operativo `FLStock`. 
+
+Se utiliza un método `mcmc` dentro de la evaluación `a4a` para obtener la incertidumbre de los parámetros, reflejada en la dimensión `iter` de `stk`.
+
+
+
+## Leer los datos de la evaluación de stock
+
+
+```{r}
+data(ple4)
+data(ple4.index)
+
+stk <- ple4 
+idx <- FLIndices(idx=ple4.index)
+
+plot(ple4)
+
+plot(ple4.index)
+```
+
+## Definir el número de iteraciones y ventana de proyección (años)
+
+En este tutorial, se utilizan 20 iteraciones junto con una ventana de proyección de 12 años. Se utiliza un período de 3 años para calcular los promedios necesarios para las proyecciones (por ejemplo, pesos medios, etc.).
+
+- *it*: número de iteraciones
+- *y0*: año inicial de la evaluación de stock (`ple4`)
+- *dy*: año final de la evaluación de stock (`ple4`)
+- *iy*: año inicial de la proyección (también año intermedio)
+- *ny*: número de años de proyección desde el año inicial
+- *fy*: año final de la proyección
+- *nsqy*: número de años para calcular la medida de desempeño 'statu quo'.
+
+```{r}
+# Set up the iteration and projection window parameters (years) ----------------
+it <- 20                    # iterations
+y0 <- range(stk)["minyear"] # initial data year
+dy <- range(stk)["maxyear"] # final data year
+iy <- dy+1                  # initial year of projection (also intermediate year)
+ny <- 12    # number of years to project from initial year
+fy <- dy+ny # final year
+nsqy <- 3   # number of years to compute status quo metrics
+
+```
+
+## Ajustar el modelo de evaluación de stock `a4a`
+
+Configure el modelo operativo (incluida la incertidumbre de los parámetros) en función del ajuste del modelo de evaluación `a4a` a los datos. Los puntos de referencia se obtienen para una `stk` "mediana" (`stk0`) para imitar las mejores estimaciones de los puntos de referencia utilizados en el enfoque ICES MSY.
+
+- *qmod*: Configurar el submodelo de capturabilidad con un *spline smoothing* (la configuración de una 'lista' permite más de un índice)
+- *fmod*: Configurar el submeode de mortalidad por pesca como un *tensor spline*, permite interactura edades y años.
+- *mcsave* y *mcmc*: Configurar los parámetros MCMC
+- *fit*: Ajustar el modelo
+- *stk*: actualizar el objeto FLStock y plot
+- *stk0*: ?
+
+```{r }
+
+# Set up the catchability submodel with a smoothing spline (setting up a 'list' allows for more than one index) 
+qmod <- list(~s(age, k=6))
+# Set up the fishing mortality submodel as a tensor spline, which allows age and year to interact
+fmod <- ~te(replace(age, age>9,9), year, k=c(6,8))
+# Set up the MCMC parameters
+mcsave <- 100
+mcmc   <- it * mcsave
+# Fit the model
+fit <- sca(stk, idx, fmodel = fmod, 
+                     qmodel = qmod, 
+                     fit    = "MCMC", 
+                     mcmc   = SCAMCMC(mcmc    = mcmc, 
+                                      mcsave  = mcsave, 
+                                      mcprobe = 0.4))
+# Update the FLStock object
+stk <- stk + fit
+plot(stk)
+# Reduce to keep one iteration only for reference points
+stk0 <- qapply(stk, iterMedians)
+
+```
+
+
+## Ajustar el modelo stock-recluta
+
+Se ajusta un modelo stock-recluta de Beverton-Holt para cada iteración, con residuos generados para la ventana de proyección basados en los residuos del período histórico. También se ajusta un modelo de stock-recluta al `stk` "mediana" como puntos de referencia.
+
+```{r}
+
+# ** Fit the stock-recruit model ** --------------------------------------------
+srbh  <- fmle(as.FLSR(stk,  model="bevholt"),
+              method="L-BFGS-B",
+              lower=c(1e-6, 1e-6), 
+               upper=c(max(rec(stk)) * 3, Inf))
+
+srbh0  <- fmle(as.FLSR(stk0,  model="bevholt"),
+               method="L-BFGS-B", 
+               lower=c(1e-6, 1e-6), 
+               upper=c(max(rec(stk)) * 3, Inf))
+
+plot(srbh0)
+
+```
+
+
+```{r}
+# Generate stock-recruit residuals for the projection period
+srbh.res <- rnorm(it, 
+                  FLQuant(0, dimnames=list(year=iy:fy)),
+                  mean(c(apply(residuals(srbh), 6, sd))))
+
+```
+
+
+
+```{r}
+# Segmented regression to 'estimate' Blim.
+srsegreg0 <- fmle(as.FLSR(stk0, model="segreg"),
+                  method="L-BFGS-B", 
+                  lower=c(1e-6, 1e-6),
+                  upper=c(max(rec(stk)) * 3, Inf)) 
+
+plot(srsegreg0)
+
+```
+
+
+## Calcular los puntos de referencia y configurar el modelo operativo para la ventana de proyección.
+
+Puntos de referencia basados en el `stk` "mediano", asumiendo (solo con fines ilustrativos) que $B_{pa}=0.5_{B_{msy}}$ y $B_{lim}=B_{pa}/1.4$.
+
+El método `stf` se aplica al objeto `stk` del modelo operativo para tener los datos necesarios (pesos medios, etc.) para la ventana de proyección.
+
+**NOTA: En el ejemplo de Dorleta se usan otros puntos de referencia**
+
+```{r}
+# Calculate the reference points
+brp  <- brp(FLBRP(stk0, srbh0))
+
+refpts(brp)
+
+Fmsy <- c(refpts(brp)["msy","harvest"])
+msy  <- c(refpts(brp)["msy","yield"])
+Bmsy <- c(refpts(brp)["msy","ssb"])
+Blim <- srsegreg0@params$b[drop=T]
+Bpa  <- Blim*exp(1.654*sqrt(var(ssb(stk)/mean(ssb(stk))))) 
+
+```
+
+
+```{r}
+#Prepare the FLStock object for projections
+stk <- stf(stk, fy-dy, nsqy, nsqy)
+
+stk@stock.wt
+stk@m
+
+```
+
+
+# CONFIGURACIÓN DE LOS ELEMENTOS  DE ERROR DE OBSERVACIÓN
+
+Estimar las capturabilidades del índice a partir del ajuste `a4a` (sin simulación)
+
+El error de observación se introduce a través del índice de capturabilidad por edad.
+
+Configure el objeto `FLIndices` y rellénelo (tenga en cuenta que `FLIndices` tiene potencialmente más de un índice, de ahí el bucle for)
+
+```{r}
+
+idcs <- FLIndices()
+for (i in 1:length(idx)){
+  
+  #   Set up FLQuants and calculate mean and sd for catchability
+  lst        <- mcf(list(index(idx[[i]]), stock.n(stk0))) # make FLQuants same dimensions
+  idx.lq     <- log(lst[[1]]/lst[[2]]) # log catchability of index
+  idx.qmu    <- idx.qsig <- stock.n(iter(stk,1)) # create quants
+  idx.qmu[]  <- yearMeans(idx.lq) # allocate same mean-at-age to every year
+  idx.qsig[] <- sqrt(yearVars(idx.lq)) # allocate same sd-at-age to every year
+  
+  #   Build index catchability based on lognormal distribution with mean and sd calculated above
+  idx.q    <- rlnorm(it, idx.qmu, idx.qsig)
+  idx_temp <- idx.q * stock.n(stk)
+  idx_temp <- FLIndex(index=idx_temp, index.q=idx.q) # generate initial index
+  
+  range(idx_temp)[c("startf", "endf")] <- c(0, 0) # timing of index (as proportion of year)
+  idcs[[i]] <- idx_temp
+}
+names(idcs) <- names(idx)
+idx<-idcs[1]
+
+```
+
+# CONFIGURAR EL LOOP DE MSE
+
+## Funciones necesarias
+
+
+### Función para el error de observación `o`
+
+En este tutorial, el error de observación se aplica a los números de la población del modelo operativo para obtener un índice de abundancia. Esto se implementa a través del índice de capturabilidad por edad. El error de observación se agrega durante cada año de la ventana de proyección y, por lo tanto, se trata más fácilmente en una función.
+
+```{r}
+# * Observation error model **
+o <- function(stk, idx, assessmentYear, dataYears) {
+  # dataYears is a position vector, not the years themselves
+  stk.tmp <- stk[, dataYears]
+  # add small amount to avoid zeros
+  catch.n(stk.tmp) <- catch.n(stk.tmp) + 0.1
+   # Generate the indices - just data years
+  idx.tmp <- lapply(idx, function(x) x[,dataYears])
+  # Generate observed index
+  for (i in 1:length(idx)) index(idx[[i]])[, assessmentYear] <-  stock.n(stk)[, assessmentYear]*index.q(idx[[i]])[, assessmentYear]
+  
+  return(list(stk=stk.tmp, idx=idx.tmp, idx.om=idx))
+}
+
+```
+
+### Función para el modelo de evaluación de stock `xsa`
+
+El modelo de evaluación utilizado para parametrizar el HCR es `XSA`, a través de `FLXSA`. Esta función establece los parámetros de control para `FLXSA` y ajusta la evaluación.
+
+```{r}
+
+# * XSA assessment model **
+xsa <- function(stk, idx){
+  # Set up XSA settings
+  control  <- FLXSA.control(tol = 1e-09, 
+                            maxit=99, 
+                            min.nse=0.3, 
+                            fse=2.0,
+                            rage = -1, 
+                            qage = range(stk)["max"]-1, 
+                            shk.n = TRUE, 
+                            shk.f = TRUE,
+                            shk.yrs = 5, 
+                            shk.ages= 5,
+                            window = 100, 
+                            tsrange = 99, 
+                            tspower = 0)
+  # Fit XSA
+  fit <- FLXSA(stk, idx, control)
+  # convergence diagnostic (quick and dirty)
+  maxit <- c("maxit" = fit@control@maxit)
+  # Update stk
+  stk   <- transform(stk, 
+                     harvest = harvest(fit), 
+                     stock.n = stock.n(fit))
+  
+  return(list(stk = stk, converge = maxit))
+}
+
+
+```
+
+### Objeto control para proyecciones `getCtrl`
+
+El método `fwd` de `FLash` necesita un objeto de control, que se establece mediante esta función.
+
+```{r}
+# * Control object for projections **
+getCtrl <- function(values, quantity, years, it){
+  dnms <- list(iter=1:it, year=years, c("min", "val", "max"))
+  arr0 <- array(NA, dimnames=dnms, dim=unlist(lapply(dnms, length)))
+  arr0[,,"val"] <- unlist(values)
+  arr0 <- aperm(arr0, c(2,3,1))
+  ctrl <- fwdControl(data.frame(year=years, 
+                                quantity=quantity, 
+                                val=NA)) 
+  ctrl@trgtArray <- arr0
+  ctrl
+}
+
+```
+
+
+# INICIALIZACIÓN DE MSE
+
+El primer año de la ventana de proyección es el año intermedio, para el cual, siguiendo el cronograma del ICES WG, ya tiene un **TAC**. Para este tutorial, se asume que el **TAC** en el último año de datos es la captura realizada en `stk` para el mismo año, mientras que el **TAC** en el año intermedio se establece igual al **TAC** en el último año de datos. Luego, el objeto `stk` debe proyectarse durante el año intermedio aplicando el **TAC** en el año intermedio con `fwd`.
+
+**NOTA: Dorleta fija un valor el TAC**
+
+```{r}
+
+vy <- ac(iy:fy)
+TAC <- FLQuant(NA, 
+               dimnames=list(TAC="all", 
+                             year=c(dy,vy), 
+                             iter=1:it))
+TAC[,ac(dy)] <- 140000
+TAC[,ac(iy)] <- TAC[,ac(dy)] #assume same TAC in the first intermediate year
+ctrl <- getCtrl(c(TAC[,ac(iy)]),
+                "catch", 
+                iy, 
+                it)
+
+# Set up the operating model FLStock object
+stk.om <- fwd(stk, 
+              control=ctrl, 
+              sr=srbh, 
+              sr.residuals = exp(srbh.res), 
+              sr.residuals.mult = TRUE)
+
+```
+
+
+
+# EMPEZAR EL LOOP MSE
+
+El loop MSE requiere lo siguiente:
+
+- modelo de error de observación a aplicar para generar el índice de abundancia,
+- la evaluación del stock (`XSA`) que se aplicará utilizando este índice para generar el 'objeto de stock' del procedimiento de gestión `stk.mp`,
+- la estimación de SSB resultante que se usará en la HCR, junto con los puntos de referencia obtenidos anteriormente, para derivar `F objetivo` para el año TAC (el año posterior al año intermedio), y
+- el TAC asociado con el `F objetivo`  se calculará aplicando `fwd` al `stk.mp`.
+
+
+El paso final del loop MSE es aplicar el TAC al 'objeto stock' del modelo operativo, `stk.om`, mediante `fwd`.
+
+```{r}
+set.seed(231) # set seed to ensure comparability between different runs
+
+for(i in vy[-length(vy)]){
+  
+  # set up simulations parameters
+  ay <- an(i)
+  cat(i, " < ")
+  flush.console()
+  vy0 <- 1:(ay-y0)              # data years (positions vector) - one less than current year
+  sqy <- (ay-y0-nsqy+1):(ay-y0) # status quo years (positions vector) - one less than current year
+  
+  # apply observation error
+  oem    <- o(stk.om, idx, i, vy0) 
+  stk.mp <- oem$stk
+  idx.mp <- oem$idx
+  idx    <- oem$idx.om
+  
+  # perform assessment
+  out.assess <- xsa(stk.mp, idx.mp)
+  stk.mp     <- out.assess$stk
+  
+  # apply ICES MSY-like Rule to obtain Ftrgt (note this is not the ICES MSY rule, but is similar)
+  flag  <- ssb(stk.mp)[,ac(ay-1)]<Bpa
+  Ftrgt <- ifelse(flag,
+                  ssb(stk.mp)[,ac(ay-1)]*Fmsy/Bpa,
+                  Fmsy) 
+  
+  # project the perceived stock to get the TAC for ay+1
+  fsq.mp    <- yearMeans(fbar(stk.mp)[,sqy]) # Use status quo years defined above
+  ctrl      <- getCtrl(c(fsq.mp, Ftrgt), "f", c(ay, ay+1), it)
+  
+  stk.mp    <- stf(stk.mp, 2)
+  
+  gmean_rec <- c(exp(yearMeans(log(rec(stk.mp)))))
+  
+  stk.mp    <- fwd(stk.mp, 
+                   control=ctrl, 
+                   sr=list(model="mean", 
+                           params = FLPar(gmean_rec,
+                                          iter=it)))
+  
+  TAC[,ac(ay+1)] <- catch(stk.mp)[,ac(ay+1)]
+  
+  # apply the TAC to the operating model stock and project the population one year forward.
+  ctrl   <- getCtrl(c(TAC[,ac(ay+1)]), "catch", ay+1, it)
+  stk.om <- fwd(stk.om, 
+                control=ctrl,
+                sr=srbh, 
+                sr.residuals = exp(srbh.res), 
+                sr.residuals.mult = TRUE) 
+}
+
+#save(stk.om, file = 'C:/users/dgarcia/Dropbox/FLBEIA_CursoIEO/Tutorials/02_MSE_with_FLR/stk.RData')
+
+
+```
+
+# ESTADÍSTICAS DE DESEMPEÑO
+
+```{r}
+# Some example performance statstics, but first isolate the projection period
+stk.tmp <- window(stk.om,start=iy)
+
+# annual probability of being below Blim 
+risky.Bmsy <- iterSums((ssb(stk.tmp)/Bmsy)<1)/it
+risky.Bpa  <- iterSums((ssb(stk.tmp)/Bpa)<1)/it
+risky.Blim <- iterSums((ssb(stk.tmp)/Blim)<1)/it
+
+risky.Bmsy 
+risky.Bpa
+risky.Blim
+
+# mean probability of being below Bmsy in the first half of the projection period
+mean(risky.Bmsy [,1:floor(length(risky.Bmsy)/2)])
+
+# ...and second half 
+mean(risky.Bmsy [,(floor(length(risky.Bmsy)/2)+1):length(risky.Bmsy)])
+
+# plot of SSB relative to Bmsy
+boxplot(data~year,data=as.data.frame(ssb(stk.tmp)),main="SSB")
+abline(h=Bmsy,col="red")
+
+plot(FLStocks(stk.om=stk.om, stk.mp=stk.mp)) + 
+  theme(legend.position="top") + 
+  geom_vline(aes(xintercept=2009))
+
+
+
+
+```
+
